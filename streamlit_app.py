@@ -6,17 +6,17 @@ import numpy as np
 from snowflake.snowpark.context import get_active_session
 from snowflake.ml.registry import Registry
 
-# ── Configuration ────────────────────────────────────────────
+# Configuration 
 st.set_page_config(
     page_title="house Price Predictor",
     page_icon="🏠",
     layout="wide"
 )
 
-# ── Session Snowflake (automatique dans Snowflake Notebooks) ─
+# Session Snowflake (automatique dans Snowflake Notebooks) ─
 session = get_active_session()
 
-# ── Charger le modèle depuis le Registry ────────────────────
+# Charger le modèle depuis le Registry 
 @st.cache_resource
 def load_model():
     registry = Registry(
@@ -28,14 +28,14 @@ def load_model():
 
 model = load_model()
 
-# ── En-tête ──────────────────────────────────────────────────
+# En-tête
 st.title("House Price Predictor")
 st.caption("Modèle ML entraîné sur Snowflake – MBA ESG 2026")
 st.markdown("Renseignez les caractéristiques de la maison pour obtenir une **estimation du prix** en temps réel.")
 
 st.divider()
 
-# ── Formulaire de saisie ─────────────────────────────────────
+# Formulaire de saisie 
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -59,7 +59,7 @@ with col3:
     prefarea         = st.selectbox("Zone privilégiée ?",    ["yes", "no"])
     furnishingstatus = st.selectbox("État d'ameublement",    ["furnished", "semi-furnished", "unfurnished"])
 
-# ── Préparation des données ───────────────────────────────────
+# Préparation des données 
 def encode_binary(val):
     return 1 if val == "yes" else 0
 
@@ -82,7 +82,7 @@ input_data = pd.DataFrame([{
     "FURNISHINGSTATUS": encode_furnishing(furnishingstatus),
 }])
 
-# ── Bouton de prédiction ──────────────────────────────────────
+# Bouton de prédiction
 st.divider()
 
 if st.button("estimer le prix", type="primary", use_container_width=True):
@@ -119,7 +119,7 @@ if st.button("estimer le prix", type="primary", use_container_width=True):
         except Exception as e:
             st.error(f"erreur lors de la prédiction : {e}")
 
-# ── Historique des prédictions ────────────────────────────────
+#Historique des prédictions
 st.divider()
 with st.expander("voir l'historique des prédictions sauvegardées"):
     try:
